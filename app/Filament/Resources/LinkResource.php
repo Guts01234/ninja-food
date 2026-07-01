@@ -38,7 +38,10 @@ class LinkResource extends Resource
                     ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('short_code')
+                    ->label('Short URL')
+                    ->formatStateUsing(fn (string $state): string => url('/' . $state))
                     ->copyable()
+                    ->copyableState(fn (string $state): string => url('/' . $state))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('clicks_count')
                     ->numeric()
@@ -78,6 +81,7 @@ class LinkResource extends Resource
         return [
             'index' => Pages\ListLinks::route('/'),
             'create' => Pages\CreateLink::route('/create'),
+            'view' => Pages\ViewLink::route('/{record}'),
             'edit' => Pages\EditLink::route('/{record}/edit'),
         ];
     }
